@@ -38,7 +38,7 @@ public class EmployeeServiceTests
         var mockRepo = new Mock<IEmployeeRepository>();
         mockRepo
             .Setup(r => r.GetByIdAsync(1))
-            .Returns(employee);
+            .ReturnsAsync(employee);
 
         var service = new EmployeeService(mockRepo.Object);
 
@@ -56,7 +56,7 @@ public class EmployeeServiceTests
         var mockRepo = new Mock<IEmployeeRepository>();
         mockRepo
             .Setup(r => r.GetByIdAsync(999))
-            .Returns((Employee?)null);
+            .ReturnsAsync((Employee?)null);
 
         var service = new EmployeeService(mockRepo.Object);
 
@@ -65,7 +65,7 @@ public class EmployeeServiceTests
         //Assert.Equal("Invalid parameter value: 999 (Parameter 'id')", ex.Message);
 
         // Act
-        var result = Record.Exception(() => service.GetByIdAsync(999));
+        var result = Record.ExceptionAsync(() => service.GetByIdAsync(999));
 
         // Assert
         Assert.IsType<ArgumentException>(result);
