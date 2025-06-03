@@ -2,13 +2,14 @@
 using EmployeesApp.Application.Employees.Services;
 using EmployeesApp.Domain.Entities;
 using Moq;
+using System.Threading.Tasks;
 
 namespace EmployeeApp.Application.Tests;
 
 public class EmployeeServiceTests
 {
     [Fact]
-    public void AddEmployee_WithRightCredentials_WillAddEmployeeToListMoq()
+    public async Task AddEmployee_WithRightCredentials_WillAddEmployeeToListMoq()
     {
         // Arrange
         var mockRepo = new Mock<IEmployeeRepository>();
@@ -21,40 +22,40 @@ public class EmployeeServiceTests
         };
 
         // Act
-        service.Add(employee);
+        await service.AddAsync(employee);
 
         // Assert
-        mockRepo.Verify(o => o.Add(It.Is<Employee>(o =>
+        mockRepo.Verify( o => o.AddAsync(It.Is<Employee>(o =>
             o.Name == "Lisa" &&
             o.Email == "lisa@ajax.com")), Times.Once);
     }
 
     [Fact]
-    public void GetById_WithValidId_ReturnsEmployee()
+    public async Task GetById_WithValidId_ReturnsEmployee()
     {
         // Arrange
         var employee = new Employee { Id = 1, Name = "Ben", Email = "dover@hotmale.com" };
         var mockRepo = new Mock<IEmployeeRepository>();
         mockRepo
-            .Setup(r => r.GetById(1))
+            .Setup(r => r.GetByIdAsync(1))
             .Returns(employee);
 
         var service = new EmployeeService(mockRepo.Object);
 
         // Act
-        var result = service.GetById(1);
+        var result = await service.GetByIdAsync(1);
 
         // Assert
         Assert.Equal(employee, result);
     }
 
     [Fact]
-    public void GetById_WithInvalidId_ThrowsArgumentException()
+    public async Task GetById_WithInvalidId_ThrowsArgumentException()
     {
         // Arrange
         var mockRepo = new Mock<IEmployeeRepository>();
         mockRepo
-            .Setup(r => r.GetById(999))
+            .Setup(r => r.GetByIdAsync(999))
             .Returns((Employee?)null);
 
         var service = new EmployeeService(mockRepo.Object);
@@ -64,7 +65,7 @@ public class EmployeeServiceTests
         //Assert.Equal("Invalid parameter value: 999 (Parameter 'id')", ex.Message);
 
         // Act
-        var result = Record.Exception(() => service.GetById(999));
+        var result = Record.Exception(() => service.GetByIdAsync(999));
 
         // Assert
         Assert.IsType<ArgumentException>(result);
