@@ -53,8 +53,8 @@ namespace EmployeesApp.Infrastructure.Persistance.Repositories
         public async Task<Employee[]> GetAllAsync()
         {
             var query = context.Employees
-                .AsNoTracking();
-
+                .AsNoTracking()
+                .Include(o => o.Company);
             return await query.ToArrayAsync();
         }
 
