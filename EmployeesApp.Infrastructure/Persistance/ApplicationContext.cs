@@ -33,7 +33,7 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options)
             .IsRequired();
 
 
-        modelBuilder.Entity<Employee>().HasData(
+        _ = modelBuilder.Entity<Employee>().HasData(
             new Employee()
             {
                 Id = 562,

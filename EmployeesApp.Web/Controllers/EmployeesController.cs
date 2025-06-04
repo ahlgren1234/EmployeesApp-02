@@ -21,7 +21,7 @@ public class EmployeesController(IEmployeeService service) : Controller
                 Id = e.Id,
                 Name = e.Name,
                 ShowAsHighlighted = service.CheckIsVIP(e),
-                CompanyName = e.Company.CompanyName,
+                CompanyName = e.Company != null ? e.Company.CompanyName : "N/A"
             })]
         };
 
@@ -46,6 +46,12 @@ public class EmployeesController(IEmployeeService service) : Controller
             Name = viewModel.Name,
             Email = viewModel.Email,
             Salary = viewModel.Salary,
+            Company = new Company
+            {
+                CompanyName = !string.IsNullOrWhiteSpace(viewModel.CompanyName)
+        ? viewModel.CompanyName
+        : "N/A"
+            }
         };
 
         await service.AddAsync(employee);

@@ -9,6 +9,6 @@
         public decimal Bonus { get; set; } = 0m;
 
         public Company? Company { get; set; }
-
+        public int? CompanyId { get; set; }
     }
 }

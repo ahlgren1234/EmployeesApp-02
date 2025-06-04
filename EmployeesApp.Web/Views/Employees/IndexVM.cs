@@ -10,7 +10,7 @@
             public required string Name { get; set; }
             public required bool ShowAsHighlighted { get; set; }
 
-            public required string CompanyName { get; set; }
+            public string? CompanyName { get; set; }
         }
     }
 }
